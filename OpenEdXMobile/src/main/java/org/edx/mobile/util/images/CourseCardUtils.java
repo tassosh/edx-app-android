@@ -2,6 +2,7 @@ package org.edx.mobile.util.images;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
@@ -21,33 +22,30 @@ public enum CourseCardUtils {
     ;
     public static final long SEVEN_DAYS_IN_MILLIS = 604800000L;
 
-    public static boolean isStarted(String start) {
+    public static boolean isStarted(@NonNull Date today, @Nullable String start) {
         // check if "start" date has passed
         if (start == null)
             return false;
 
         final Date startDate = DateUtil.convertToDate(start);
-        final Date today = new Date();
         return today.after(startDate);
     }
 
-    public static boolean isEnded(String end) {
+    public static boolean isEnded(@NonNull Date today, @Nullable String end) {
         // check if "end" date has passed
         if (end == null)
             return false;
 
         final Date endDate = DateUtil.convertToDate(end);
-        final Date today = new Date();
         return today.after(endDate);
     }
 
-    public static boolean isExpired(String expiry) {
+    public static boolean isExpired(@NonNull Date today, @Nullable String expiry) {
         // check if "expiry" date has passed
         if (expiry == null)
             return false;
 
         final Date expiryDate = DateUtil.convertToDate(expiry);
-        final Date today = new Date();
         return today.after(expiryDate);
     }
 
@@ -57,7 +55,7 @@ public enum CourseCardUtils {
 
     public static String getFormattedDate(Context context, Date today, String expiry, String start, String end, StartType start_type, String start_display) {
         final CharSequence formattedDate;
-        if (isStarted(start)) {
+        if (isStarted(today, start)) {
             if (expiry != null) {
                 final Date expiryDate = DateUtil.convertToDate(expiry);
                 final long dayDifferenceInMillies;
@@ -67,7 +65,7 @@ public enum CourseCardUtils {
                     dayDifferenceInMillies = expiryDate.getTime() - today.getTime();
                 }
 
-                if (isExpired(expiry)) {
+                if (isExpired(today, expiry)) {
                     if (dayDifferenceInMillies > SEVEN_DAYS_IN_MILLIS) {
                         formattedDate = ResourceUtil.getFormattedString(context.getResources(), R.string
                                 .label_expired_on, "date", DateUtil.formatDateWithNoYear(expiryDate.getTime()));
@@ -92,7 +90,7 @@ public enum CourseCardUtils {
                 final Date endDate = DateUtil.convertToDate(end);
                 if (endDate == null) {
                     return null;
-                } else if (isEnded(end)) {
+                } else if (isEnded(today, end)) {
                     formattedDate = ResourceUtil.getFormattedString(context.getResources(), R.string
                             .label_ended, "date", DateUtil.formatDateWithNoYear(endDate.getTime()));
                 } else {
