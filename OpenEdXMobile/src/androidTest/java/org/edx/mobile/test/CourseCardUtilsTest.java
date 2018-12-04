@@ -40,7 +40,7 @@ public class CourseCardUtilsTest {
     public void testCourseStartedAndExpiringInAWeek() {
         final String expectedOutput = "Course access expires in 6 days";
         final String expiry = "2018-12-07T00:00:00+05:00";
-        final String start = "2018-12-01T00:00:00+05:00";
+        final String start = "2018-11-01T00:00:00+05:00";
         final String end = "2019-12-01T00:00:00+05:00";
         final String output = CourseCardUtils.getFormattedDate(context, today, expiry, start, end, StartType.TIMESTAMP, null);
         assertEquals(expectedOutput, output);
@@ -50,7 +50,7 @@ public class CourseCardUtilsTest {
     public void testCourseStartedAndExpiringInMoreThanAWeek() {
         final String expectedOutput = "Course access expires on December 9";
         final String expiry = "2018-12-09T00:00:00+05:00";
-        final String start = "2018-12-01T00:00:00+05:00";
+        final String start = "2018-11-01T00:00:00+05:00";
         final String end = "2019-12-01T00:00:00+05:00";
         final String output = CourseCardUtils.getFormattedDate(context, today, expiry, start, end, StartType.TIMESTAMP, null);
         assertEquals(expectedOutput, output);
@@ -60,7 +60,7 @@ public class CourseCardUtilsTest {
     public void testCourseStartedAndExpiredAWeekAgo() {
         final String expectedOutput = "Course access expired 7 days ago";
         final String expiry = "2018-11-24T00:59:59+05:00";
-        final String start = "2018-12-01T00:00:00+05:00";
+        final String start = "2018-11-01T00:00:00+05:00";
         final String end = "2019-12-01T00:00:00+05:00";
         final String output = CourseCardUtils.getFormattedDate(context, today, expiry, start, end, StartType.TIMESTAMP, null);
         assertEquals(expectedOutput, output);
@@ -70,7 +70,7 @@ public class CourseCardUtilsTest {
     public void testCourseStartedAndExpiredMoreThanAWeekAgo() {
         final String expectedOutput = "Course access expired on November 1";
         final String expiry = "2018-11-01T00:00:00+05:00";
-        final String start = "2018-12-01T00:00:00+05:00";
+        final String start = "2018-10-01T00:00:00+05:00";
         final String end = "2019-12-01T00:00:00+05:00";
         final String output = CourseCardUtils.getFormattedDate(context, today, expiry, start, end, StartType.TIMESTAMP, null);
         assertEquals(expectedOutput, output);
