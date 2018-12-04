@@ -26,8 +26,8 @@ public enum CourseCardUtils {
         if (start == null)
             return false;
 
-        Date startDate = DateUtil.convertToDate(start);
-        Date today = new Date();
+        final Date startDate = DateUtil.convertToDate(start);
+        final Date today = new Date();
         return today.after(startDate);
     }
 
@@ -36,8 +36,8 @@ public enum CourseCardUtils {
         if (end == null)
             return false;
 
-        Date endDate = DateUtil.convertToDate(end);
-        Date today = new Date();
+        final Date endDate = DateUtil.convertToDate(end);
+        final Date today = new Date();
         return today.after(endDate);
     }
 
@@ -46,8 +46,8 @@ public enum CourseCardUtils {
         if (expiry == null)
             return false;
 
-        Date expiryDate = DateUtil.convertToDate(expiry);
-        Date today = new Date();
+        final Date expiryDate = DateUtil.convertToDate(expiry);
+        final Date today = new Date();
         return today.after(expiryDate);
     }
 
@@ -89,7 +89,7 @@ public enum CourseCardUtils {
                     }
                 }
             } else {
-                Date endDate = DateUtil.convertToDate(end);
+                final Date endDate = DateUtil.convertToDate(end);
                 if (endDate == null) {
                     return null;
                 } else if (isEnded(end)) {
@@ -102,7 +102,7 @@ public enum CourseCardUtils {
             }
         } else {
             if (start_type == StartType.TIMESTAMP && !TextUtils.isEmpty(start)) {
-                Date startDate = DateUtil.convertToDate(start);
+                final Date startDate = DateUtil.convertToDate(start);
                 formattedDate = ResourceUtil.getFormattedString(context.getResources(), R.string
                         .label_starting, "date", DateUtil.formatDateWithNoYear(startDate.getTime()));
             } else if (start_type == StartType.STRING && !TextUtils.isEmpty(start_display)) {
