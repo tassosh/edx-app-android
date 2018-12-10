@@ -84,10 +84,11 @@ public class CourseTabsDashboardFragment extends TabsBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final boolean auditAccessExpired = courseData.getAuditAccessExpires() != null &&
-                new Date().after(DateUtil.convertToDate(courseData.getAuditAccessExpires()));
 
-        if (auditAccessExpired || !courseData.getCourse().getCoursewareAccess().hasAccess()) {
+        if (!courseData.getCourse().getCoursewareAccess().hasAccess()) {
+            final boolean auditAccessExpired = courseData.getAuditAccessExpires() != null &&
+                    new Date().after(DateUtil.convertToDate(courseData.getAuditAccessExpires()));
+
             errorLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard_error_layout, container, false);
             errorLayoutBinding.errorMsg.setText(auditAccessExpired ? R.string.course_access_expired : R.string.course_not_started);
             return errorLayoutBinding.getRoot();
