@@ -143,11 +143,11 @@ public class CourseEntry implements Serializable {
     public void setCoursewareAccess(CoursewareAccess access) { this.courseware_access = access; }
 
     public boolean isStarted() {
-        return CourseCardUtils.isStarted(new Date(), start);
+        return CourseCardUtils.isDatePassed(new Date(), start);
     }
 
     public boolean isEnded() {
-        return CourseCardUtils.isEnded(new Date(), end);
+        return CourseCardUtils.isDatePassed(new Date(), end);
     }
 
     public boolean hasUpdates() {

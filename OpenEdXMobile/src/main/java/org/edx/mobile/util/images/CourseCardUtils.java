@@ -22,40 +22,44 @@ public enum CourseCardUtils {
     ;
     public static final long SEVEN_DAYS_IN_MILLIS = 604800000L;
 
-    public static boolean isStarted(@NonNull Date today, @Nullable String start) {
-        // check if "start" date has passed
-        if (start == null)
-            return false;
-
-        final Date startDate = DateUtil.convertToDate(start);
-        return today.after(startDate);
-    }
-
-    public static boolean isEnded(@NonNull Date today, @Nullable String end) {
-        // check if "end" date has passed
-        if (end == null)
-            return false;
-
-        final Date endDate = DateUtil.convertToDate(end);
-        return today.after(endDate);
-    }
-
-    public static boolean isExpired(@NonNull Date today, @Nullable String expiry) {
-        // check if "expiry" date has passed
-        if (expiry == null)
-            return false;
-
-        final Date expiryDate = DateUtil.convertToDate(expiry);
-        return today.after(expiryDate);
+    /**
+     * Checks if the given date is past today.
+     *
+     * @param today     Today's date.
+     * @param otherDate Other date to cross-match with today's date.
+     * @return <code>true</code> if the other date is past today,
+     * <code>false</code> otherwise.
+     */
+    public static boolean isDatePassed(@NonNull Date today, @Nullable String otherDate) {
+        return otherDate != null && today.after(DateUtil.convertToDate(otherDate));
     }
 
     public static String getFormattedDate(Context context, String start, String end, StartType start_type, String start_display) {
         return getFormattedDate(context, new Date(), null, start, end, start_type, start_display);
     }
 
+    /**
+     * Provides a formatted date string taking various dates related to a course in account like
+     * start date, end date and expiry date.
+     * <br>Example outputs:
+     * <br>Starting January 15
+     * <br>Course access expires in 4 days
+     * <br>Course access expired on February 15
+     * <br>Ending February 15
+     *
+     * @param context       The context.
+     * @param today         Today's date.
+     * @param expiry        Expiry date.
+     * @param start         Start date.
+     * @param end           End date.
+     * @param start_type    Tell's if a course's start date is formatted, unformatted or unset.
+     * @param start_display Tell's how the server represents the start date based on start_type.
+     * @return A formatted date.
+     */
     public static String getFormattedDate(Context context, Date today, String expiry, String start, String end, StartType start_type, String start_display) {
         final CharSequence formattedDate;
-        if (isStarted(today, start)) {
+        // check if "start" date has passed
+        if (isDatePassed(today, start)) {
             if (expiry != null) {
                 final Date expiryDate = DateUtil.convertToDate(expiry);
                 final long dayDifferenceInMillies;
@@ -65,7 +69,8 @@ public enum CourseCardUtils {
                     dayDifferenceInMillies = expiryDate.getTime() - today.getTime();
                 }
 
-                if (isExpired(today, expiry)) {
+                // check if "expiry" date has passed
+                if (isDatePassed(today, expiry)) {
                     if (dayDifferenceInMillies > SEVEN_DAYS_IN_MILLIS) {
                         formattedDate = ResourceUtil.getFormattedString(context.getResources(), R.string
                                 .label_expired_on, "date", DateUtil.formatDateWithNoYear(expiryDate.getTime()));
@@ -90,7 +95,8 @@ public enum CourseCardUtils {
                 final Date endDate = DateUtil.convertToDate(end);
                 if (endDate == null) {
                     return null;
-                } else if (isEnded(today, end)) {
+                } else if (isDatePassed(today, end)) {
+                    // if "end" date has passed
                     formattedDate = ResourceUtil.getFormattedString(context.getResources(), R.string
                             .label_ended, "date", DateUtil.formatDateWithNoYear(endDate.getTime()));
                 } else {
